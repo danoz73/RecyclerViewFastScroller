@@ -67,7 +67,7 @@ You can see usage of some of these in the example `recycler_view_frag.xml` which
 
 ### Setup
 
-Apologies for the current state of affairs:
+*(Apologies for the current state of affairs. I'll hopefully make this into a library when I think it is complete enough for my liking)*
 
 Copy the `Application/src/main/java/com/example/recyclerviewfastscroller/ui/scroller` package and all its files into your source so you now have `scroller` as one of your packages
 
