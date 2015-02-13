@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="VerticalRecyclerViewFastScroller">
-        <attr name="barBackground" format="color|reference" />
-        <attr name="handleBackground" format="color|reference" />
+        <attr name="barColor" format="color|reference" />
+        <attr name="barBackground" format="reference" />
+        <attr name="handleColor" format="color|reference" />
+        <attr name="handleBackground" format="reference" />
     </declare-styleable>
 </resources>

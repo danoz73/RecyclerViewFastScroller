@@ -69,11 +69,11 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
 
         try {
             Drawable barDrawable = a.getDrawable(R.styleable.VerticalRecyclerViewFastScroller_barBackground);
-            int barColor = a.getColor(R.styleable.VerticalRecyclerViewFastScroller_barBackground, Color.GRAY);
+            int barColor = a.getColor(R.styleable.VerticalRecyclerViewFastScroller_barColor, Color.GRAY);
             applyCustomAttributesToView(scrollBar, barDrawable, barColor);
 
             Drawable handleDrawable = a.getDrawable(R.styleable.VerticalRecyclerViewFastScroller_handleBackground);
-            int handleColor = a.getColor(R.styleable.VerticalRecyclerViewFastScroller_handleBackground, Color.GRAY);
+            int handleColor = a.getColor(R.styleable.VerticalRecyclerViewFastScroller_handleColor, Color.GRAY);
             applyCustomAttributesToView(scrollHandle, handleDrawable, handleColor);
         } finally {
             a.recycle();
