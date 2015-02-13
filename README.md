@@ -5,6 +5,8 @@ The RecyclerViewFastScroller is a widget that can be added to a layout and conne
 
 This project is a demonstration of using the RecyclerViewFastScroller widget in a simple activity that uses the basic workings of com.example.android.recyclerview from the v21 Android samples.
 
+![RecyclerViewFastScroller screenshot](http://i.imgur.com/IozUtucl.png)
+
 ### Usage
 
 Below are some simple steps to using a RecyclerViewFastScroller. Currently, there is only a single implementation (`VerticalRecyclerViewFastScroller`), so that will be used here.
