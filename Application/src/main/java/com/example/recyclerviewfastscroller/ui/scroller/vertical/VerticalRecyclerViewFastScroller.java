@@ -1,18 +1,15 @@
 package com.example.recyclerviewfastscroller.ui.scroller.vertical;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.OnScrollListener;
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.View;
 
 import com.example.android.recyclerview.R;
 import com.example.recyclerviewfastscroller.ui.scroller.AbsRecyclerViewFastScroller;
 import com.example.recyclerviewfastscroller.ui.scroller.RecyclerViewScroller;
+import com.example.recyclerviewfastscroller.ui.scroller.progresscalculation.LinearLayoutManagerScrollProgressCalculator;
+import com.example.recyclerviewfastscroller.ui.scroller.progresscalculation.ScrollProgressCalculator;
 
 /**
  * Widget used to scroll a {@link RecyclerView}
@@ -41,45 +38,6 @@ public class VerticalRecyclerViewFastScroller extends AbsRecyclerViewFastScrolle
         mHandle.setY(Math.max(getMinimumScrollY(), Math.min(handleY, getMaximumScrollY())));
     }
 
-    @Override @NonNull
-    public OnScrollListener getOnScrollListener() {
-        if (mOnScrollListener == null) {
-            mOnScrollListener = new OnScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-                    int lastFullyVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
-
-                    float scrollProgress = calculateScrollProgressThroughList(recyclerView, lastFullyVisiblePosition);
-                    moveHandleToPosition(scrollProgress);
-                }
-
-                /**
-                 * @param recyclerView recycler that experiences scroll event
-                 * @param lastFullyVisiblePosition the last fully visible item
-                 * @return the progress through the recycler view list content
-                 */
-                private float calculateScrollProgressThroughList(RecyclerView recyclerView,
-                                                                 int lastFullyVisiblePosition) {
-                    View visibleChild = recyclerView.getChildAt(0);
-                    ViewHolder holder = recyclerView.getChildViewHolder(visibleChild);
-                    int itemHeight = holder.itemView.getHeight();
-                    int recyclerHeight = recyclerView.getHeight();
-                    int itemsInWindow = recyclerHeight / itemHeight;
-
-                    int numItemsInList = recyclerView.getAdapter().getItemCount();
-                    int numScrollableSectionsInList = numItemsInList - itemsInWindow;
-                    int indexOfLastFullyVisibleItemInFirstSection = numItemsInList - numScrollableSectionsInList - 1;
-
-                    int currentSection = lastFullyVisiblePosition - indexOfLastFullyVisibleItemInFirstSection;
-
-                    return (float) currentSection / numScrollableSectionsInList;
-                }
-            };
-        }
-        return mOnScrollListener;
-    }
-
     @Override
     public float convertTouchEventToScrollProgress(MotionEvent event) {
         float y = event.getY();
@@ -96,6 +54,14 @@ public class VerticalRecyclerViewFastScroller extends AbsRecyclerViewFastScrolle
     @Override
     protected int getLayoutResourceId() {
         return R.layout.vertical_recycler_fast_scroller_layout;
+    }
+
+    @Override
+    protected ScrollProgressCalculator getScrollProgressCalculator() {
+        if (mScrollProgressCalculator == null) {
+            mScrollProgressCalculator = new LinearLayoutManagerScrollProgressCalculator();
+        }
+        return mScrollProgressCalculator;
     }
 
     private float getMinimumScrollY() {

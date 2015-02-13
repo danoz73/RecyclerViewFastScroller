@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 
 import com.example.android.recyclerview.R;
+import com.example.recyclerviewfastscroller.ui.scroller.progresscalculation.ScrollProgressCalculator;
 
 /**
  * Defines a basic widget that will allow for fast scrolling a RecyclerView using the basic paradigm of
@@ -37,6 +38,7 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      * to make {@link OnScrollListener} an abstract class instead of an interface. Hmmm.
      */
     protected OnScrollListener mOnScrollListener;
+    protected ScrollProgressCalculator mScrollProgressCalculator;
 
     public AbsRecyclerViewFastScroller(Context context) {
         this(context, null, 0);
@@ -48,7 +50,6 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
 
     public AbsRecyclerViewFastScroller(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(getLayoutResourceId(), this, true);
 
@@ -58,7 +59,6 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
 
         setOnTouchListener(new FastScrollerTouchListener(this));
     }
-
     /**
      * Method for applying custom attributes to a Scroller
      * @param scrollBar can have a custom color and resource
@@ -114,7 +114,31 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      * @return an implementation for responding to scroll events from the {@link #mRecyclerView}
      */
     @NonNull
-    public abstract OnScrollListener getOnScrollListener();
+    public OnScrollListener getOnScrollListener() {
+        if (mOnScrollListener == null) {
+            mOnScrollListener = new OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    float scrollProgress = getScrollProgressCalculator().calculateScrollProgress(recyclerView);
+                    moveHandleToPosition(scrollProgress);
+                }
+            };
+        }
+        return mOnScrollListener;
+    }
+
+    /**
+     * Define a layout resource for your implementation of AbsFastScroller
+     * Currently must contain a handle view (R.id.scroll_handle) and a bar (R.id.scroll_bar)
+     * @return a resource id corresponding to the chosen layout.
+     */
+    protected abstract int getLayoutResourceId();
+
+    /**
+     * Define a ScrollProgressCalculator for your implementation of AbsFastScroller
+     * @return a chosen implementation of {@link ScrollProgressCalculator}
+     */
+    protected abstract ScrollProgressCalculator getScrollProgressCalculator();
 
     /**
      * Moves the handle of the scroller by specific progress amount
@@ -129,11 +153,5 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      */
     public abstract float convertTouchEventToScrollProgress(MotionEvent event);
 
-    /**
-     * Define a layout resource for your implementation of AbsFastScroller
-     * Currently must contain a handle view (R.id.scroll_handle) and a bar (R.id.scroll_bar)
-     * @return a resource id corresponding to the chosen layout.
-     */
-    protected abstract int getLayoutResourceId();
 
 }
