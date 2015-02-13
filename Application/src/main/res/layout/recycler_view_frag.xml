@@ -34,6 +34,8 @@
         custom:handleBackground="@color/fastScrollHandleColor"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
+        android:paddingRight="@dimen/margin_small"
+        android:paddingEnd="@dimen/margin_small"
         />
 
 </RelativeLayout>
