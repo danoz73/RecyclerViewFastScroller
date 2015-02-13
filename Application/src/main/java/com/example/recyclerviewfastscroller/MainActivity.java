@@ -17,10 +17,16 @@
 package com.example.recyclerviewfastscroller;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import com.example.android.recyclerview.R;
+import com.example.recyclerviewfastscroller.fragment.RecyclerViewFragment;
+import com.example.recyclerviewfastscroller.fragment.RecyclerViewWithSectionsFragment;
 
 /**
  * Simple activity for displaying the {@link RecyclerViewFragment}
@@ -33,11 +39,33 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             RecyclerViewFragment fragment = new RecyclerViewFragment();
-            transaction.replace(R.id.sample_content_fragment, fragment);
-            transaction.commit();
+            replaceCurrentFragment(fragment);
         }
     }
 
-}
+    private void replaceCurrentFragment(Fragment newFragment) {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.sample_content_fragment, newFragment);
+        transaction.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_item_list_with_sections:
+                RecyclerViewWithSectionsFragment sectionsFragment = new RecyclerViewWithSectionsFragment();
+                replaceCurrentFragment(sectionsFragment);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }}

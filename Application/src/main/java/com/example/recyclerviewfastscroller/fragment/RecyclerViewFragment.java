@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package com.example.recyclerviewfastscroller;
+package com.example.recyclerviewfastscroller.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -17,4 +17,5 @@
 
 <resources>
     <string name="element_text">Element</string>
+    <string name="menu_item_section_indexer_list">List With Sections</string>
 </resources>
