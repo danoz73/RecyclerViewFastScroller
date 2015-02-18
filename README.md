@@ -7,6 +7,10 @@ This project is a demonstration of using the RecyclerViewFastScroller widget in 
 
 ![RecyclerViewFastScroller screenshot](http://i.imgur.com/IozUtucl.png)
 
+As of [`b3e2d2f`](https://github.com/danoz73/RecyclerViewFastScroller/commit/b3e2d2fa8284dea31fbc5f9f218199f2a187a657), there is now support for adding a `SectionIndicator` widget, which connects to the scroller. This adds functionality similar to Google's Lollipop Contacts application:
+
+![RecyclerViewFastScroller with section indicator screenshot](http://i.imgur.com/2zBwIlwl.png)
+
 ### Usage
 
 Below are some simple steps to using a RecyclerViewFastScroller. Currently, there is only a single implementation (`VerticalRecyclerViewFastScroller`), so that will be used here.
@@ -22,7 +26,8 @@ The best way to check everything out is to peruse the example code and run the e
   <android.support.v7.widget.RecyclerView
       android:id="@+id/recyclerView"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+      android:layout_height="match_parent"
+      />
 
   <your.package.name.scroller.vertical.VerticalRecyclerViewFastScroller
       android:id="@+id/fast_scroller"
@@ -68,20 +73,40 @@ There are currently a few attributes that can be used to customize the vertical 
   <attr name="handleBackground" format="reference" />
 ```
 
-You can see usage of some of these in the example `recycler_view_frag.xml` which is the layout for the example app's single fragment.
+You can see usage of some of these in the example `recycler_view_with_fast_scroller_fragment.xml` which is the layout for the example app's single fragment.
+
+##### SectionIndicators
+
+Refer to `RecyclerViewWithSectionIndicatorFragment` and the corresponding `recycler_view_with_fast_scroller_section_title_indicator_fragment.xml` in order to find an implementation that adds the Lollipop-Contacts-like section indicator. In addition to the above, you will need to include the indicator in your layout (example here from `recycler_view_with_fast_scroller_section_title_indicator_fragment.xml`):
+
+```java
+...
+    <com.example.recyclerviewfastscroller.ui.example.ColorGroupSectionTitleIndicator
+      android:id="@+id/fast_scroller_section_title_indicator"
+      android:layout_width="wrap_content"
+      android:layout_height="@dimen/list_item_height"
+      android:layout_toLeftOf="@id/fast_scroller"
+      android:layout_toStartOf="@id/fast_scroller"
+
+      custom:backgroundColor="@android:color/white"
+      custom:textColor="@android:color/black"
+       />
+...
+```
+and then connect it to the scroller in the fragment:
+```java
+...
+    // Connect the section indicator to the scroller
+    fastScroller.setSectionIndicator(sectionTitleIndicator);
+...
+```
 
 ### Setup
 
 *(Apologies for the current state of affairs. I'll hopefully make this into a library when I think it is complete enough for my liking)*
 
-Copy the `Application/src/main/java/com/example/recyclerviewfastscroller/ui/scroller` package and all its files into your source so you now have `scroller` as one of your packages
-
-Copy the `VerticalRecyclerViewFastScroller` attributes from my `res/values/attrs.xml` file into your own  
-
-Copy the `vertical_recycler_fast_scroller_layout.xml` file from my `res/layout` directory into your own
+For now, you will need to dive into the code yourself and copy/repurpose any of the code you need to use. Most of the code you can reuse should be in the `Application/src/main/java/com/example/recyclerviewfastscroller/ui/scroller` package. You will likely need some of the layout and drawable files as well.
 
 ### Contribution
 
-Feel free to submit pull requests. I haven't necessarily implemented this as well as possible, and am always open to suggestions for improvement.
-
-I just couldn't find a simple example for a simple vertical fast scroller for RecyclerView on the internet.
+Feel free to submit pull requests and create issues. I haven't necessarily implemented this as well as possible, and am always open to suggestions for improvement.
