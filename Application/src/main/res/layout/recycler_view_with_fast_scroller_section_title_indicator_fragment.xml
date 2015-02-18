@@ -26,7 +26,7 @@
         />
 
     <com.example.recyclerviewfastscroller.ui.example.ColorGroupSectionTitleIndicator
-        android:id="@+id/fast_scroller_section_title_popup"
+        android:id="@+id/fast_scroller_section_title_indicator"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/list_item_height"
         android:layout_toLeftOf="@id/fast_scroller"

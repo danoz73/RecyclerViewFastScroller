@@ -29,18 +29,23 @@ public class RecyclerViewWithSectionIndicatorFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.recycler_view_with_fast_scroller_section_title_indicator_fragment, container, false);
 
+        // Grab your RecyclerView, RecyclerViewFastScroller, and SectionTitleIndicator from the layout
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        VerticalRecyclerViewFastScroller fastScroller =
+                (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
+        SectionTitleIndicator sectionTitleIndicator =
+                (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_indicator);
+
         RecyclerView.Adapter adapter = new ColorfulAdapter(new ColorDataSet());
         recyclerView.setAdapter(adapter);
 
-        VerticalRecyclerViewFastScroller fastScroller =
-                (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
+        // Connect the recycler to the scroller (to let the scroller scroll the list)
         fastScroller.setRecyclerView(recyclerView);
 
+        // Connect the scroller to the recycler (to let the recycler scroll the scroller's handle)
         recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
 
-        SectionTitleIndicator sectionTitleIndicator =
-                (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_popup);
+        // Connect the section indicator to the scroller
         fastScroller.setSectionIndicator(sectionTitleIndicator);
 
         setRecyclerViewLayoutManager(recyclerView);

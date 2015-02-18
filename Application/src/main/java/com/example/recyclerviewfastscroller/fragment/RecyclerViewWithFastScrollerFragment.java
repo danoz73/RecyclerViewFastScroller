@@ -44,9 +44,14 @@ public class RecyclerViewWithFastScrollerFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.recycler_view_with_fast_scroller_fragment, container, false);
 
+        // Grab the RecyclerView and the RecyclerViewFastScroller from the layout
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
+
+        // Connect the recycler to the scroller (to let the scroller scroll the list)
         fastScroller.setRecyclerView(recyclerView);
+
+        // Connect the scroller to the recycler (to let the recycler scroll the scroller's handle)
         recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
 
         setRecyclerViewLayoutManager(recyclerView);
