@@ -6,10 +6,9 @@ The RecyclerViewFastScroller is a widget that can be added to a layout and conne
 This project is a demonstration of using the RecyclerViewFastScroller widget in a simple activity that uses the basic workings of com.example.android.recyclerview from the v21 Android samples.
 
 ![RecyclerViewFastScroller screenshot](http://i.imgur.com/IozUtucl.png)
-
-As of [`b3e2d2f`](https://github.com/danoz73/RecyclerViewFastScroller/commit/b3e2d2fa8284dea31fbc5f9f218199f2a187a657), there is now support for adding a `SectionIndicator` widget, which connects to the scroller. This adds functionality similar to Google's Lollipop Contacts application:
-
 ![RecyclerViewFastScroller with section indicator screenshot](http://i.imgur.com/2zBwIlwl.png)
+
+As of [`b3e2d2f`](https://github.com/danoz73/RecyclerViewFastScroller/commit/b3e2d2fa8284dea31fbc5f9f218199f2a187a657), there is now support for adding a `SectionIndicator` widget, which connects to the scroller. This adds functionality similar to Google's Lollipop Contacts application.
 
 ### Usage
 
