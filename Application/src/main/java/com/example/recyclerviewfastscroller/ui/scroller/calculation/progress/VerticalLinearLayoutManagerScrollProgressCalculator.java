@@ -1,4 +1,6 @@
-package com.example.recyclerviewfastscroller.ui.scroller.progresscalculation;
+package com.example.recyclerviewfastscroller.ui.scroller.calculation.progress;
+
+import com.example.recyclerviewfastscroller.ui.scroller.calculation.VerticalScrollBoundsProvider;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +10,11 @@ import android.view.View;
 /**
  * Calculates scroll progress for a {@link RecyclerView} with a {@link LinearLayoutManager}
  */
-public class LinearLayoutManagerScrollProgressCalculator extends ScrollProgressCalculator {
+public class VerticalLinearLayoutManagerScrollProgressCalculator extends VerticalScrollProgressCalculator {
+
+    public VerticalLinearLayoutManagerScrollProgressCalculator(VerticalScrollBoundsProvider scrollBoundsProvider) {
+        super(scrollBoundsProvider);
+    }
 
     /**
      * @param recyclerView recycler that experiences a scroll event

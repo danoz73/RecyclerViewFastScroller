@@ -1,19 +1,3 @@
-/*
-* Copyright (C) 2014 The Android Open Source Project
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*      http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
 package com.example.recyclerviewfastscroller.fragment;
 
 import android.os.Bundle;
@@ -25,16 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.recyclerview.R;
+import com.example.recyclerviewfastscroller.data.ColorDataSet;
 import com.example.recyclerviewfastscroller.recyclerview.ColorfulAdapter;
+import com.example.recyclerviewfastscroller.ui.scroller.sectionindicator.title.SectionTitleIndicator;
 import com.example.recyclerviewfastscroller.ui.scroller.vertical.VerticalRecyclerViewFastScroller;
 
 /**
  * Adapted from sample code that demonstrates the use of {@link RecyclerView} with a {@link LinearLayoutManager}
  */
-public class RecyclerViewFragment extends Fragment {
-
-    private static final String TAG = "RecyclerViewFragment";
-    private static final int DATASET_COUNT = 100;
+public class RecyclerViewWithSectionIndicatorFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,17 +27,23 @@ public class RecyclerViewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
+        ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.recycler_view_with_fast_scroller_section_title_indicator_fragment, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
-        VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
+        RecyclerView.Adapter adapter = new ColorfulAdapter(new ColorDataSet());
+        recyclerView.setAdapter(adapter);
+
+        VerticalRecyclerViewFastScroller fastScroller =
+                (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
         fastScroller.setRecyclerView(recyclerView);
+
         recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
 
-        setRecyclerViewLayoutManager(recyclerView);
+        SectionTitleIndicator sectionTitleIndicator =
+                (SectionTitleIndicator) rootView.findViewById(R.id.fast_scroller_section_title_popup);
+        fastScroller.setSectionIndicator(sectionTitleIndicator);
 
-        RecyclerView.Adapter adapter = new ColorfulAdapter(getDummyDataSet());
-        recyclerView.setAdapter(adapter);
+        setRecyclerViewLayoutManager(recyclerView);
 
         return rootView;
     }
@@ -77,14 +66,4 @@ public class RecyclerViewFragment extends Fragment {
         recyclerView.scrollToPosition(scrollPosition);
     }
 
-    /**
-     * Generates Strings for RecyclerView's adapter. This data would usually come from somewhere...
-     */
-    private String[] getDummyDataSet() {
-        String[] data = new String[DATASET_COUNT];
-        for (int i = 0; i < DATASET_COUNT; i++) {
-            data[i] = "This is element #" + i;
-        }
-        return data;
-    }
 }

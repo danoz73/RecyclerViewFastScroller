@@ -1,7 +1,9 @@
 package com.example.recyclerviewfastscroller.ui.scroller;
 
+import com.example.recyclerviewfastscroller.ui.scroller.sectionindicator.SectionIndicator;
 import com.example.recyclerviewfastscroller.ui.scroller.vertical.VerticalRecyclerViewFastScroller;
 
+import android.support.annotation.Nullable;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -22,10 +24,27 @@ class FastScrollerTouchListener implements OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        float scrollProgress = mFastScroller.convertTouchEventToScrollProgress(event);
-        mFastScroller.scrollTo(scrollProgress);
+        SectionIndicator sectionIndicator = mFastScroller.getSectionIndicator();
+        showOrHideIndicator(sectionIndicator, event);
+
+        float scrollProgress = mFastScroller.getScrollProgress(event);
+        mFastScroller.scrollTo(scrollProgress, true);
         mFastScroller.moveHandleToPosition(scrollProgress);
         return true;
+    }
+
+    private void showOrHideIndicator(@Nullable SectionIndicator sectionIndicator, MotionEvent event) {
+        if (sectionIndicator == null) {
+            return;
+        }
+
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                sectionIndicator.animateAlpha(1f);
+                return;
+            case MotionEvent.ACTION_UP:
+                sectionIndicator.animateAlpha(0f);
+        }
     }
 
 }

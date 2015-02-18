@@ -25,11 +25,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.example.android.recyclerview.R;
-import com.example.recyclerviewfastscroller.fragment.RecyclerViewFragment;
-import com.example.recyclerviewfastscroller.fragment.RecyclerViewWithSectionsFragment;
+import com.example.recyclerviewfastscroller.fragment.RecyclerViewWithFastScrollerFragment;
+import com.example.recyclerviewfastscroller.fragment.RecyclerViewWithSectionIndicatorFragment;
+import com.example.recyclerviewfastscroller.ui.scroller.sectionindicator.title.SectionTitleIndicator;
+import com.example.recyclerviewfastscroller.ui.scroller.vertical.VerticalRecyclerViewFastScroller;
 
 /**
- * Simple activity for displaying the {@link RecyclerViewFragment}
+ * Simple activity for displaying an example of the {@link VerticalRecyclerViewFastScroller} as well as
+ * {@link SectionTitleIndicator} usage paired with the fast scroller
  */
 public class MainActivity extends FragmentActivity {
 
@@ -39,7 +42,7 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
 
         if (savedInstanceState == null) {
-            RecyclerViewFragment fragment = new RecyclerViewFragment();
+            RecyclerViewWithFastScrollerFragment fragment = new RecyclerViewWithFastScrollerFragment();
             replaceCurrentFragment(fragment);
         }
     }
@@ -61,11 +64,16 @@ public class MainActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
+            case R.id.menu_item_list_no_section_indicator:
+                RecyclerViewWithFastScrollerFragment simpleFastScrollerFragment = new RecyclerViewWithFastScrollerFragment();
+                replaceCurrentFragment(simpleFastScrollerFragment);
+                return true;
             case R.id.menu_item_list_with_sections:
-                RecyclerViewWithSectionsFragment sectionsFragment = new RecyclerViewWithSectionsFragment();
+                RecyclerViewWithSectionIndicatorFragment sectionsFragment = new RecyclerViewWithSectionIndicatorFragment();
                 replaceCurrentFragment(sectionsFragment);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }}
+    }
+}

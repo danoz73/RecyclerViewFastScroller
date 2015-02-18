@@ -25,16 +25,14 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.android.recyclerview.R;
+import com.example.recyclerviewfastscroller.data.ColorDataSet;
 import com.example.recyclerviewfastscroller.recyclerview.ColorfulAdapter;
 import com.example.recyclerviewfastscroller.ui.scroller.vertical.VerticalRecyclerViewFastScroller;
 
 /**
  * Adapted from sample code that demonstrates the use of {@link RecyclerView} with a {@link LinearLayoutManager}
  */
-public class RecyclerViewWithSectionsFragment extends Fragment {
-
-    private static final String TAG = "RecyclerViewFragment";
-    private static final int DATASET_COUNT = 100;
+public class RecyclerViewWithFastScrollerFragment extends Fragment {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,16 +42,16 @@ public class RecyclerViewWithSectionsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.recycler_view_frag, container, false);
+        View rootView = inflater.inflate(R.layout.recycler_view_with_fast_scroller_fragment, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         VerticalRecyclerViewFastScroller fastScroller = (VerticalRecyclerViewFastScroller) rootView.findViewById(R.id.fast_scroller);
         fastScroller.setRecyclerView(recyclerView);
         recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
 
         setRecyclerViewLayoutManager(recyclerView);
 
-        RecyclerView.Adapter adapter = new ColorfulAdapter(getDummyDataSet());
+        RecyclerView.Adapter adapter = new ColorfulAdapter(new ColorDataSet());
         recyclerView.setAdapter(adapter);
 
         return rootView;
@@ -77,14 +75,4 @@ public class RecyclerViewWithSectionsFragment extends Fragment {
         recyclerView.scrollToPosition(scrollPosition);
     }
 
-    /**
-     * Generates Strings for RecyclerView's adapter. This data would usually come from somewhere...
-     */
-    private String[] getDummyDataSet() {
-        String[] data = new String[DATASET_COUNT];
-        for (int i = 0; i < DATASET_COUNT; i++) {
-            data[i] = "This is element #" + i;
-        }
-        return data;
-    }
 }

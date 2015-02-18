@@ -28,7 +28,8 @@ public interface RecyclerViewScroller {
     /**
      * Indicate to the scroller that it should scroll to a certain amount of scroll progress
      * @param scrollProgress the progress of the scroll expressed as a fraction from [0, 1]
+     * @param fromTouch true if this scroll request was triggered by a touch
      */
-    public void scrollTo(float scrollProgress);
+    public void scrollTo(float scrollProgress, boolean fromTouch);
 
 }

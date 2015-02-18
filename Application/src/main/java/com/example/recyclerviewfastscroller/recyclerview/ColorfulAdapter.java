@@ -21,18 +21,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.example.android.recyclerview.R;
+import com.example.recyclerviewfastscroller.data.ColorData;
+import com.example.recyclerviewfastscroller.data.ColorDataSet;
+import com.example.recyclerviewfastscroller.data.ColorGroup;
 
 /**
  * Provide views to RecyclerView with data from mDataSet.
  */
-public class ColorfulAdapter extends RecyclerView.Adapter<ColorfulAdapter.ViewHolder> {
+public class ColorfulAdapter extends RecyclerView.Adapter<ColorfulAdapter.ViewHolder> implements SectionIndexer {
 
-    private static final float NUM_HUES = 359f;
-
-    private String[] mDataSet;
+    private ColorDataSet mDataSet;
 
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
@@ -60,10 +62,10 @@ public class ColorfulAdapter extends RecyclerView.Adapter<ColorfulAdapter.ViewHo
     /**
      * Initialize the dataset of the Adapter.
      *
-     * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
+     * @param data String[] containing the data to populate views to be used by RecyclerView.
      */
-    public ColorfulAdapter(String[] dataSet) {
-        mDataSet = dataSet;
+    public ColorfulAdapter(ColorDataSet data) {
+        mDataSet = data;
     }
 
     // Create new views (invoked by the layout manager)
@@ -78,15 +80,35 @@ public class ColorfulAdapter extends RecyclerView.Adapter<ColorfulAdapter.ViewHo
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
         // Get element from your dataset at this position and replace the contents of the view
         // with that element
-        float positionBasedHue = position * (NUM_HUES / mDataSet.length);
-        viewHolder.itemView.setBackgroundColor(Color.HSVToColor(new float[] {positionBasedHue, 1, 1}));
-        viewHolder.getTextView().setText(mDataSet[position]);
+        ColorData color = mDataSet.get(position);
+        viewHolder.itemView.setBackgroundColor(color.getIntValue());
+        viewHolder.getTextView().setText(mDataSet.get(position).toString());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return mDataSet.length;
+        return mDataSet.getSize();
+    }
+
+    @Override
+    public Object[] getSections() {
+        return ColorGroup.values();
+    }
+
+    @Override
+    public int getPositionForSection(int sectionIndex) {
+        return 0;
+    }
+
+    @Override
+    public int getSectionForPosition(int position) {
+        if (position >= mDataSet.getSize()) {
+            position = mDataSet.getSize() - 1;
+        }
+
+        ColorData color = mDataSet.get(position);
+        return color.getColorGroup().ordinal();
     }
 
 }
