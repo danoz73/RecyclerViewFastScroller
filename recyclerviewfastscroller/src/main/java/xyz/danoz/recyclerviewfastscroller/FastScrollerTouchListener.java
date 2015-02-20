@@ -3,6 +3,7 @@ package xyz.danoz.recyclerviewfastscroller;
 import xyz.danoz.recyclerviewfastscroller.sectionindicator.SectionIndicator;
 
 import android.support.annotation.Nullable;
+import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -23,6 +24,17 @@ class FastScrollerTouchListener implements OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        int action = MotionEventCompat.getActionMasked(event);
+
+        switch (action) {
+            case MotionEvent.ACTION_DOWN:
+                mFastScroller.setIsGrabbingHandle(true);
+                break;
+            case MotionEvent.ACTION_UP:
+                mFastScroller.setIsGrabbingHandle(false);
+                break;
+        }
+
         SectionIndicator sectionIndicator = mFastScroller.getSectionIndicator();
         showOrHideIndicator(sectionIndicator, event);
 
