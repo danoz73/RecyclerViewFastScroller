@@ -189,6 +189,24 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         return mOnScrollListener;
     }
 
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+
+        if (getScrollProgressCalculator() == null) {
+            onCreateScrollProgressCalculator();
+        }
+
+        // synchronize the handle position to the RecyclerView
+        float scrollProgress = getScrollProgressCalculator().calculateScrollProgress(mRecyclerView);
+        moveHandleToPosition(scrollProgress);
+    }
+
+    /**
+     * Sub classes have to override this method and create the ScrollProgressCalculator instance in this method.
+     */
+    protected abstract void onCreateScrollProgressCalculator();
+
     /**
      * Takes a touch event and determines how much scroll progress this translates into
      * @param event touch event received by the layout
