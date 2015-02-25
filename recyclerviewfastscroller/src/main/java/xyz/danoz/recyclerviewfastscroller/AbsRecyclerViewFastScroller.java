@@ -1,4 +1,4 @@
-package xyz.danoz.recyclerviewfastscroller.sample.ui.scroller;
+package xyz.danoz.recyclerviewfastscroller;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -17,10 +17,9 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.SectionIndexer;
 
-import xyz.danoz.recyclerview.sample.R;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.progress.ScrollProgressCalculator;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.progress.TouchableScrollProgressCalculator;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.sectionindicator.SectionIndicator;
+import xyz.danoz.recyclerviewfastscroller.calculation.progress.ScrollProgressCalculator;
+import xyz.danoz.recyclerviewfastscroller.calculation.progress.TouchableScrollProgressCalculator;
+import xyz.danoz.recyclerviewfastscroller.sectionindicator.SectionIndicator;
 
 /**
  * Defines a basic widget that will allow for fast scrolling a RecyclerView using the basic paradigm of

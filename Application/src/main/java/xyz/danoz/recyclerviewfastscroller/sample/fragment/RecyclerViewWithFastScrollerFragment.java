@@ -27,7 +27,7 @@ import android.view.ViewGroup;
 import xyz.danoz.recyclerview.sample.R;
 import xyz.danoz.recyclerviewfastscroller.sample.data.ColorDataSet;
 import xyz.danoz.recyclerviewfastscroller.sample.recyclerview.ColorfulAdapter;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.vertical.VerticalRecyclerViewFastScroller;
+import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
 /**
  * Adapted from sample code that demonstrates the use of {@link RecyclerView} with a {@link LinearLayoutManager}

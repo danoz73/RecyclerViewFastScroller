@@ -1,4 +1,4 @@
-package xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.sectionindicator.title;
+package xyz.danoz.recyclerviewfastscroller.sectionindicator.title;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -8,8 +8,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
-import xyz.danoz.recyclerview.sample.R;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.sectionindicator.AbsSectionIndicator;
+import xyz.danoz.recyclerviewfastscroller.R;
+import xyz.danoz.recyclerviewfastscroller.sectionindicator.AbsSectionIndicator;
 
 /**
  * Popup view that gets shown when fast scrolling

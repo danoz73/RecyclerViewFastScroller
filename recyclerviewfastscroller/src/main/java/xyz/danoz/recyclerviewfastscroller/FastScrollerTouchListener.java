@@ -1,6 +1,6 @@
-package xyz.danoz.recyclerviewfastscroller.sample.ui.scroller;
+package xyz.danoz.recyclerviewfastscroller;
 
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.sectionindicator.SectionIndicator;
+import xyz.danoz.recyclerviewfastscroller.sectionindicator.SectionIndicator;
 
 import android.support.annotation.Nullable;
 import android.view.MotionEvent;
@@ -15,7 +15,7 @@ class FastScrollerTouchListener implements OnTouchListener {
     private final AbsRecyclerViewFastScroller mFastScroller;
 
     /**
-     * @param fastScroller {@link xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.vertical.VerticalRecyclerViewFastScroller} for this listener to scroll
+     * @param fastScroller {@link xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller} for this listener to scroll
      */
     public FastScrollerTouchListener(AbsRecyclerViewFastScroller fastScroller) {
         mFastScroller = fastScroller;

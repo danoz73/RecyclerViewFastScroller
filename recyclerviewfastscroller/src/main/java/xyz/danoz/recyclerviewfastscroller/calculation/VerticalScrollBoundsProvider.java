@@ -1,4 +1,4 @@
-package xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation;
+package xyz.danoz.recyclerviewfastscroller.calculation;
 
 /**
  * {@link Please describe ScrollBoundsProvider!}

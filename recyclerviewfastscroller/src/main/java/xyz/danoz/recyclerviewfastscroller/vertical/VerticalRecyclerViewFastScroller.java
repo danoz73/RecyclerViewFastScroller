@@ -1,18 +1,18 @@
-package xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.vertical;
+package xyz.danoz.recyclerviewfastscroller.vertical;
 
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import xyz.danoz.recyclerview.sample.R;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.AbsRecyclerViewFastScroller;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.RecyclerViewScroller;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.VerticalScrollBoundsProvider;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.position.VerticalScreenPositionCalculator;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.progress.TouchableScrollProgressCalculator;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.progress.VerticalLinearLayoutManagerScrollProgressCalculator;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.progress.VerticalScrollProgressCalculator;
+import xyz.danoz.recyclerviewfastscroller.R;
+import xyz.danoz.recyclerviewfastscroller.AbsRecyclerViewFastScroller;
+import xyz.danoz.recyclerviewfastscroller.RecyclerViewScroller;
+import xyz.danoz.recyclerviewfastscroller.calculation.VerticalScrollBoundsProvider;
+import xyz.danoz.recyclerviewfastscroller.calculation.position.VerticalScreenPositionCalculator;
+import xyz.danoz.recyclerviewfastscroller.calculation.progress.TouchableScrollProgressCalculator;
+import xyz.danoz.recyclerviewfastscroller.calculation.progress.VerticalLinearLayoutManagerScrollProgressCalculator;
+import xyz.danoz.recyclerviewfastscroller.calculation.progress.VerticalScrollProgressCalculator;
 
 /**
  * Widget used to fast-scroll a vertical {@link RecyclerView}.

@@ -27,8 +27,8 @@ import android.view.MenuItem;
 import xyz.danoz.recyclerview.sample.R;
 import xyz.danoz.recyclerviewfastscroller.sample.fragment.RecyclerViewWithFastScrollerFragment;
 import xyz.danoz.recyclerviewfastscroller.sample.fragment.RecyclerViewWithSectionIndicatorFragment;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.sectionindicator.title.SectionTitleIndicator;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.vertical.VerticalRecyclerViewFastScroller;
+import xyz.danoz.recyclerviewfastscroller.sectionindicator.title.SectionTitleIndicator;
+import xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller;
 
 /**
  * Simple activity for displaying an example of the {@link VerticalRecyclerViewFastScroller} as well as

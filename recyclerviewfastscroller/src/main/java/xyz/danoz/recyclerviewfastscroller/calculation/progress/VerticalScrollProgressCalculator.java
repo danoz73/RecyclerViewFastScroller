@@ -1,8 +1,8 @@
-package xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.progress;
+package xyz.danoz.recyclerviewfastscroller.calculation.progress;
 
 import android.view.MotionEvent;
 
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.VerticalScrollBoundsProvider;
+import xyz.danoz.recyclerviewfastscroller.calculation.VerticalScrollBoundsProvider;
 
 /**
  * Basic scroll progress calculator used to calculate vertical scroll progress from a touch event

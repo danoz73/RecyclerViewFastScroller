@@ -1,4 +1,4 @@
-package xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.sectionindicator.animation;
+package xyz.danoz.recyclerviewfastscroller.sectionindicator.animation;
 
 import android.animation.ObjectAnimator;
 import android.view.View;

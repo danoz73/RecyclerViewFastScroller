@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 
 import xyz.danoz.recyclerviewfastscroller.sample.data.ColorGroup;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.sectionindicator.title.SectionTitleIndicator;
+import xyz.danoz.recyclerviewfastscroller.sectionindicator.title.SectionTitleIndicator;
 
 /**
  * Indicator for sections of type {@link ColorGroup}
