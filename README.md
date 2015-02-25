@@ -28,7 +28,7 @@ The best way to check everything out is to peruse the example code and run the e
       android:layout_height="match_parent"
       />
 
-  <your.package.name.scroller.vertical.VerticalRecyclerViewFastScroller
+  <xyz.danoz.recyclerviewfastscroller.vertical.VerticalRecyclerViewFastScroller
       android:id="@+id/fast_scroller"
       android:layout_width="@dimen/however_wide_you_want_this"
       android:layout_height="match_parent"
@@ -80,7 +80,7 @@ Refer to `RecyclerViewWithSectionIndicatorFragment` and the corresponding `recyc
 
 ```java
 ...
-    <com.example.recyclerviewfastscroller.ui.example.ColorGroupSectionTitleIndicator
+    <xyz.danoz.recyclerviewfastscroller.sample.ui.example.ColorGroupSectionTitleIndicator
       android:id="@+id/fast_scroller_section_title_indicator"
       android:layout_width="wrap_content"
       android:layout_height="@dimen/list_item_height"
@@ -102,10 +102,8 @@ and then connect it to the scroller in the fragment:
 
 ### Setup
 
-*(Apologies for the current state of affairs. I'll hopefully make this into a library when I think it is complete enough for my liking)*
-
-For now, you will need to dive into the code yourself and copy/repurpose any of the code you need to use. Most of the code you can reuse should be in the `Application/src/main/java/com/example/recyclerviewfastscroller/ui/scroller` package. You will likely need some of the layout and drawable files as well.
+This project is in transit to maven central, but is not yet available. For now, I have included an `.aar` file in https://github.com/danoz73/RecyclerViewFastScroller/releases that can be used for the time being.
 
 ### Contribution
 
-Feel free to submit pull requests and create issues. I haven't necessarily implemented this as well as possible, and am always open to suggestions for improvement.
+Feel free to submit pull requests and create issues! I will try to be vigilant about maintaining this library, but may not always be as fast as you would like ;)
