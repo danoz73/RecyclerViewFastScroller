@@ -50,15 +50,10 @@ public class VerticalRecyclerViewFastScroller extends AbsRecyclerViewFastScrolle
         mHandle.setY(mScreenPositionCalculator.getYPositionFromScrollProgress(scrollProgress));
     }
 
-    @Override
-    public void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        if (mScrollProgressCalculator == null || mScreenPositionCalculator == null) {
-            VerticalScrollBoundsProvider boundsProvider =
-                    new VerticalScrollBoundsProvider(mBar.getY(), mBar.getY() + mBar.getHeight() - mHandle.getHeight());
-            mScrollProgressCalculator = new VerticalLinearLayoutManagerScrollProgressCalculator(boundsProvider);
-            mScreenPositionCalculator = new VerticalScreenPositionCalculator(boundsProvider);
-        }
+    protected void onCreateScrollProgressCalculator() {
+        VerticalScrollBoundsProvider boundsProvider =
+                new VerticalScrollBoundsProvider(mBar.getY(), mBar.getY() + mBar.getHeight() - mHandle.getHeight());
+        mScrollProgressCalculator = new VerticalLinearLayoutManagerScrollProgressCalculator(boundsProvider);
+        mScreenPositionCalculator = new VerticalScreenPositionCalculator(boundsProvider);
     }
-
 }
