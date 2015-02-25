@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         />
 
-    <com.example.recyclerviewfastscroller.ui.scroller.vertical.VerticalRecyclerViewFastScroller
+    <xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.vertical.VerticalRecyclerViewFastScroller
         android:id="@+id/fast_scroller"
         android:layout_width="24dp"
         android:layout_height="match_parent"
