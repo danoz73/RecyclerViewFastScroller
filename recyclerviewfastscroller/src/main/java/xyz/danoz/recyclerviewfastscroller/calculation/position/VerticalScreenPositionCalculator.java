@@ -1,6 +1,6 @@
-package xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.position;
+package xyz.danoz.recyclerviewfastscroller.calculation.position;
 
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.VerticalScrollBoundsProvider;
+import xyz.danoz.recyclerviewfastscroller.calculation.VerticalScrollBoundsProvider;
 
 /**
  * Calculates the correct vertical Y position for a view based on scroll progress and given bounds

@@ -1,11 +1,10 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion as Integer
     buildToolsVersion rootProject.ext.buildToolsVersion as String
 
     defaultConfig {
-        applicationId "xyz.danoz.recyclerviewfastscroller.sample"
         minSdkVersion rootProject.ext.minSdkVersion as Integer
         targetSdkVersion rootProject.ext.targetSdkVersion as Integer
         versionCode rootProject.ext.versionCode as Integer
@@ -20,5 +19,11 @@ android {
 dependencies {
     compile "com.android.support:support-v4:21.0.3"
     compile "com.android.support:recyclerview-v7:21.0.2"
-    compile project(':recyclerviewfastscroller')
 }
+
+// Add the below when ready to publish to maven
+//apply from: 'gradle-maven-push.gradle'
+//
+//afterEvaluate {
+//    androidJavadocs.classpath += project.android.libraryVariants.toList().first().javaCompile.classpath
+//}

@@ -1,4 +1,4 @@
-package xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.sectionindicator;
+package xyz.danoz.recyclerviewfastscroller.sectionindicator;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import xyz.danoz.recyclerview.sample.R;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.VerticalScrollBoundsProvider;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.calculation.position.VerticalScreenPositionCalculator;
-import xyz.danoz.recyclerviewfastscroller.sample.ui.scroller.sectionindicator.animation.DefaultSectionIndicatorAlphaAnimator;
+import xyz.danoz.recyclerviewfastscroller.R;
+import xyz.danoz.recyclerviewfastscroller.calculation.VerticalScrollBoundsProvider;
+import xyz.danoz.recyclerviewfastscroller.calculation.position.VerticalScreenPositionCalculator;
+import xyz.danoz.recyclerviewfastscroller.sectionindicator.animation.DefaultSectionIndicatorAlphaAnimator;
 
 /**
  * Abstract base implementation of a section indicator used to indicate the section of a list upon which the user is
