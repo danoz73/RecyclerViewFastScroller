@@ -10,9 +10,14 @@ android {
         versionCode rootProject.ext.versionCode as Integer
         versionName rootProject.ext.versionName as String
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 
@@ -21,9 +26,8 @@ dependencies {
     compile "com.android.support:recyclerview-v7:21.0.2"
 }
 
-// Add the below when ready to publish to maven
-//apply from: 'gradle-maven-push.gradle'
-//
-//afterEvaluate {
-//    androidJavadocs.classpath += project.android.libraryVariants.toList().first().javaCompile.classpath
-//}
+apply from: 'gradle-maven-push.gradle'
+
+afterEvaluate {
+    androidJavadocs.classpath += project.android.libraryVariants.toList().first().javaCompile.classpath
+}

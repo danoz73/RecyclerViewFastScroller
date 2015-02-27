@@ -1,5 +1,6 @@
 package xyz.danoz.recyclerviewfastscroller;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -122,6 +123,7 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         setViewBackground(mBar, drawable);
     }
 
+    @TargetApi(VERSION_CODES.JELLY_BEAN)
     private void setViewBackground(View view, Drawable background) {
         if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
             view.setBackground(background);
