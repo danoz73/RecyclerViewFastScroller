@@ -10,6 +10,11 @@ This project is a demonstration of using the RecyclerViewFastScroller widget in 
 
 As of [`b3e2d2f`](https://github.com/danoz73/RecyclerViewFastScroller/commit/b3e2d2fa8284dea31fbc5f9f218199f2a187a657), there is now support for adding a `SectionIndicator` widget, which connects to the scroller. This adds functionality similar to Google's Lollipop Contacts application.
 
+### Download
+```java
+compile 'xyz.danoz:recyclerviewfastscroller:0.1.0'
+```
+
 ### Usage
 
 Below are some simple steps to using a RecyclerViewFastScroller. Currently, there is only a single implementation (`VerticalRecyclerViewFastScroller`), so that will be used here.
