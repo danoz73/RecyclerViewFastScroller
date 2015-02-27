@@ -14,7 +14,7 @@ As of [`b3e2d2f`](https://github.com/danoz73/RecyclerViewFastScroller/commit/b3e
 
 Below are some simple steps to using a RecyclerViewFastScroller. Currently, there is only a single implementation (`VerticalRecyclerViewFastScroller`), so that will be used here.
 
-The best way to check everything out is to peruse the example code and run the example app. See how `VerticalRecyclerViewFastScroller` is utilized in the `recycler_view_frag.xml`.
+The best way to check everything out is to peruse the example code and run the sample Application. See how `VerticalRecyclerViewFastScroller` is utilized in the `recycler_view_frag.xml`.
 
 ##### Example Code
 
