@@ -1,7 +1,9 @@
 package xyz.danoz.recyclerviewfastscroller.sectionindicator.animation;
 
-import android.animation.ObjectAnimator;
 import android.view.View;
+
+import com.nineoldandroids.animation.ObjectAnimator;
+import com.nineoldandroids.view.ViewHelper;
 
 /**
  * Utility class for animating the popup section indicator
@@ -15,7 +17,7 @@ public class DefaultSectionIndicatorAlphaAnimator {
 
     public DefaultSectionIndicatorAlphaAnimator(View sectionIndicatorView) {
         mSectionIndicatorView = sectionIndicatorView;
-        mSectionIndicatorView.setAlpha(0);
+        ViewHelper.setAlpha(mSectionIndicatorView, 0);
     }
 
     public void animateTo(float target){

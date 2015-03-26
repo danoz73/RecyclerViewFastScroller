@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
+import com.nineoldandroids.view.ViewHelper;
+
 import xyz.danoz.recyclerviewfastscroller.R;
 import xyz.danoz.recyclerviewfastscroller.AbsRecyclerViewFastScroller;
 import xyz.danoz.recyclerviewfastscroller.RecyclerViewScroller;
@@ -47,12 +49,13 @@ public class VerticalRecyclerViewFastScroller extends AbsRecyclerViewFastScrolle
 
     @Override
     public void moveHandleToPosition(float scrollProgress) {
-        mHandle.setY(mScreenPositionCalculator.getYPositionFromScrollProgress(scrollProgress));
+        ViewHelper.setY(mHandle, mScreenPositionCalculator.getYPositionFromScrollProgress(scrollProgress));
     }
 
+    @Override
     protected void onCreateScrollProgressCalculator() {
         VerticalScrollBoundsProvider boundsProvider =
-                new VerticalScrollBoundsProvider(mBar.getY(), mBar.getY() + mBar.getHeight() - mHandle.getHeight());
+                new VerticalScrollBoundsProvider(ViewHelper.getY(mBar), ViewHelper.getY(mBar) + mBar.getHeight() - mHandle.getHeight());
         mScrollProgressCalculator = new VerticalLinearLayoutManagerScrollProgressCalculator(boundsProvider);
         mScreenPositionCalculator = new VerticalScreenPositionCalculator(boundsProvider);
     }

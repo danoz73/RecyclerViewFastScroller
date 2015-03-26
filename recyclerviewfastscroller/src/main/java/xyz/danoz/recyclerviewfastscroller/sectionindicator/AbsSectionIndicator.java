@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.nineoldandroids.view.ViewHelper;
+
 import xyz.danoz.recyclerviewfastscroller.R;
 import xyz.danoz.recyclerviewfastscroller.calculation.VerticalScrollBoundsProvider;
 import xyz.danoz.recyclerviewfastscroller.calculation.position.VerticalScreenPositionCalculator;
@@ -75,7 +77,7 @@ public abstract class AbsSectionIndicator<T> extends FrameLayout implements Sect
 
     @Override
     public void setProgress(float progress) {
-        setY(mScreenPositionCalculator.getYPositionFromScrollProgress(progress));
+        ViewHelper.setY(this, mScreenPositionCalculator.getYPositionFromScrollProgress(progress));
     }
 
     @Override
