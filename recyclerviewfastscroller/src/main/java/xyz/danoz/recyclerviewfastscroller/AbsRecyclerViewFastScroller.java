@@ -168,7 +168,12 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
     }
 
     private int getPositionFromScrollProgress(float scrollProgress) {
-        return (int) (mRecyclerView.getAdapter().getItemCount() * scrollProgress);
+        int lastPosition = mRecyclerView.getAdapter().getItemCount() - 1;
+        if (lastPosition <= 0) {
+            return 0;
+        } else {
+            return (int) (lastPosition * scrollProgress);
+        }
     }
 
     /**
