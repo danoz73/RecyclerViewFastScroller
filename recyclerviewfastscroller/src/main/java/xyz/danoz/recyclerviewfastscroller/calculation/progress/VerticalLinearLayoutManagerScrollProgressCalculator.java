@@ -24,6 +24,9 @@ public class VerticalLinearLayoutManagerScrollProgressCalculator extends Vertica
     public float calculateScrollProgress(RecyclerView recyclerView) {
         LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
         int lastFullyVisiblePosition = layoutManager.findLastCompletelyVisibleItemPosition();
+        if (lastFullyVisiblePosition == RecyclerView.NO_POSITION) {
+            lastFullyVisiblePosition = layoutManager.findLastVisibleItemPosition();
+        }
 
         View visibleChild = recyclerView.getChildAt(0);
         ViewHolder holder = recyclerView.getChildViewHolder(visibleChild);

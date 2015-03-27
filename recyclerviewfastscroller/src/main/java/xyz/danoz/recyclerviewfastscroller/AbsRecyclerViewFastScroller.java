@@ -189,7 +189,7 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                     TouchableScrollProgressCalculator scrollProgressCalculator = getScrollProgressCalculator();
                     if (scrollProgressCalculator != null) {
-                        float scrollProgress = getScrollProgressCalculator().calculateScrollProgress(recyclerView);
+                        float scrollProgress = scrollProgressCalculator.calculateScrollProgress(recyclerView);
                         moveHandleToPosition(scrollProgress);
                     }
                 }
