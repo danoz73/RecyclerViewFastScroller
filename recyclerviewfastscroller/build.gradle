@@ -26,8 +26,14 @@ dependencies {
     compile "com.android.support:recyclerview-v7:21.0.2"
 }
 
-apply from: 'gradle-maven-push.gradle'
+def uploadScriptPropertyName = "recyclerviewfastscroller.uploadScript"
 
-afterEvaluate {
-    androidJavadocs.classpath += project.android.libraryVariants.toList().first().javaCompile.classpath
+if (project.hasProperty(uploadScriptPropertyName)
+        && new File((String) project.property(uploadScriptPropertyName)).exists()) {
+
+    apply from: project.property(uploadScriptPropertyName)
+
+    afterEvaluate {
+        androidJavadocs.classpath += project.android.libraryVariants.toList().first().javaCompile.classpath
+    }
 }
