@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:recyclerviewfastscroller="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
@@ -21,8 +21,8 @@
         android:paddingRight="@dimen/margin_small"
         android:paddingEnd="@dimen/margin_small"
 
-        custom:barColor="@color/fastScrollBarColor"
-        custom:handleBackground="@drawable/fast_scroller_handle_rounded"
+        recyclerviewfastscroller:rfs_barColor="@color/fastScrollBarColor"
+        recyclerviewfastscroller:rfs_handleBackground="@drawable/fast_scroller_handle_rounded"
         />
 
     <xyz.danoz.recyclerviewfastscroller.sample.ui.example.ColorGroupSectionTitleIndicator
@@ -32,8 +32,8 @@
         android:layout_toLeftOf="@id/fast_scroller"
         android:layout_toStartOf="@id/fast_scroller"
 
-        custom:backgroundColor="@android:color/white"
-        custom:textColor="@android:color/black"
+        recyclerviewfastscroller:rfs_backgroundColor="@android:color/white"
+        recyclerviewfastscroller:rfs_textColor="@android:color/black"
         />
 
 </RelativeLayout>
