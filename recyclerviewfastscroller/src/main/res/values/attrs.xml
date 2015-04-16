@@ -14,8 +14,8 @@
     </declare-styleable>
 
     <declare-styleable name="SectionTitleIndicator">
-        <attr name="textColor" format="color|reference" />
-        <attr name="backgroundColor" format="color|reference" />
+        <attr name="titleTextColor" format="color|reference" />
+        <attr name="titleBackgroundColor" format="color|reference" />
     </declare-styleable>
 
 </resources>

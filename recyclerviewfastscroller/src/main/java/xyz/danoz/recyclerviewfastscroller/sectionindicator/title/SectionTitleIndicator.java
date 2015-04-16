@@ -40,11 +40,11 @@ public abstract class SectionTitleIndicator<T> extends AbsSectionIndicator<T> {
         TypedArray attributes = getContext().getTheme().obtainStyledAttributes(attrs, STYLEABLE, 0, 0);
         try {
             int customBackgroundColor =
-                    attributes.getColor(R.styleable.SectionTitleIndicator_backgroundColor, getDefaultBackgroundColor());
+                    attributes.getColor(R.styleable.SectionTitleIndicator_titleBackgroundColor, getDefaultBackgroundColor());
             applyCustomBackgroundColorAttribute(customBackgroundColor);
 
             int customTextColor =
-                    attributes.getColor(R.styleable.SectionTitleIndicator_textColor, getDefaultBackgroundColor());
+                    attributes.getColor(R.styleable.SectionTitleIndicator_titleTextColor, getDefaultBackgroundColor());
             applyCustomTextColorAttribute(customTextColor);
         } finally {
             attributes.recycle();
