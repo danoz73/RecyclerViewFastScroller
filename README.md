@@ -14,7 +14,7 @@ As of [`b3e2d2f`](https://github.com/danoz73/RecyclerViewFastScroller/commit/b3e
 
 You can grab the current version of the library from maven central
 ```java
-compile 'xyz.danoz:recyclerviewfastscroller:0.1.2'
+compile 'xyz.danoz:recyclerviewfastscroller:0.1.3'
 ```
 
 ### Usage
