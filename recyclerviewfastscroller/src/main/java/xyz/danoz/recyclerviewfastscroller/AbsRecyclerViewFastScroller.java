@@ -182,7 +182,11 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
             mOnScrollListener = new OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    float scrollProgress = getScrollProgressCalculator().calculateScrollProgress(recyclerView);
+                    float scrollProgress = 0;
+                    ScrollProgressCalculator scrollProgressCalculator = getScrollProgressCalculator();
+                    if (scrollProgressCalculator != null) {
+                        scrollProgress = scrollProgressCalculator.calculateScrollProgress(recyclerView);
+                    }
                     moveHandleToPosition(scrollProgress);
                 }
             };
@@ -214,7 +218,11 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      * @return scroll progress, or fraction by which list is scrolled [0 to 1]
      */
     public float getScrollProgress(MotionEvent event) {
-        return getScrollProgressCalculator().calculateScrollProgress(event);
+        ScrollProgressCalculator scrollProgressCalculator = getScrollProgressCalculator();
+        if (scrollProgressCalculator != null) {
+            return getScrollProgressCalculator().calculateScrollProgress(event);
+        }
+        return 0;
     }
 
     /**
@@ -228,6 +236,7 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      * Define a ScrollProgressCalculator for your implementation of AbsFastScroller
      * @return a chosen implementation of {@link ScrollProgressCalculator}
      */
+    @Nullable
     protected abstract TouchableScrollProgressCalculator getScrollProgressCalculator();
 
     /**
