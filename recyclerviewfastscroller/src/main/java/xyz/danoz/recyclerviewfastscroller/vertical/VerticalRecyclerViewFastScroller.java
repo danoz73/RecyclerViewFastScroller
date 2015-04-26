@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import xyz.danoz.recyclerviewfastscroller.AbsRecyclerViewFastScroller;
 import xyz.danoz.recyclerviewfastscroller.R;
@@ -55,6 +57,17 @@ public class VerticalRecyclerViewFastScroller extends AbsRecyclerViewFastScrolle
         mHandle.setY(mScreenPositionCalculator.getYPositionFromScrollProgress(scrollProgress));
     }
 
+    @Override
+    protected Animation loadShowAnimation() {
+        return AnimationUtils.loadAnimation(getContext(), R.anim.fast_scroller_slide_in_right);
+    }
+
+    @Override
+    protected Animation loadHideAnimation() {
+        return AnimationUtils.loadAnimation(getContext(), R.anim.fast_scroller_slide_out_right);
+    }
+
+    @Override
     protected void onCreateScrollProgressCalculator() {
         VerticalScrollBoundsProvider boundsProvider =
                 new VerticalScrollBoundsProvider(mBar.getY(), mBar.getY() + mBar.getHeight() - mHandle.getHeight());

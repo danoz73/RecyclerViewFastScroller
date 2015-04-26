@@ -9,12 +9,14 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.SectionIndexer;
 
@@ -31,6 +33,14 @@ import xyz.danoz.recyclerviewfastscroller.sectionindicator.SectionIndicator;
 public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements RecyclerViewScroller {
 
     private static final int[] STYLEABLE = R.styleable.AbsRecyclerViewFastScroller;
+
+    private static final int AUTO_HIDE_SCROLLER_TIMEOUT_MILLS = 1000;
+
+    private static final int CURRENT_ANIMATION_NONE = 0;
+    private static final int CURRENT_ANIMATION_SHOW = 1;
+    private static final int CURRENT_ANIMATION_HIDE = 2;
+
+
     /** The long bar along which a handle travels */
     protected final View mBar;
     /** The handle that signifies the user's progress in the list */
@@ -46,6 +56,15 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
     /** If I had my druthers, AbsRecyclerViewFastScroller would implement this as an interface, but Android has made
      * {@link OnScrollListener} an abstract class instead of an interface. Hmmm */
     protected OnScrollListener mOnScrollListener;
+
+    /** true: user is grabbing the handle, false: otherwise */
+    private boolean mIsGrabbingHandle;
+
+    /** true: always show the scroller, false: hide the scroller automatically */
+    private boolean mFastScrollAlwaysVisible = false;
+    /** Type of the view animation (CURRENT_ANIMATION_xxx) */
+    private int mCurrentAnimationType = CURRENT_ANIMATION_NONE;
+    private Runnable mAutoHideProcessRunnable;
 
     public AbsRecyclerViewFastScroller(Context context) {
         this(context, null, 0);
@@ -81,6 +100,29 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         }
 
         setOnTouchListener(new FastScrollerTouchListener(this));
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        mAutoHideProcessRunnable = new Runnable() {
+            @Override
+            public void run() {
+                hideWithAnimation();
+            }
+        };
+        if (!mFastScrollAlwaysVisible) {
+            hide();
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        cancelAutoHideScrollerProcess();
+        mAutoHideProcessRunnable = null;
     }
 
     private void applyCustomAttributesToView(View view, Drawable drawable, int color) {
@@ -188,6 +230,14 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
                         scrollProgress = scrollProgressCalculator.calculateScrollProgress(recyclerView);
                     }
                     moveHandleToPosition(scrollProgress);
+
+                    // show scroll bar
+                    if (!mFastScrollAlwaysVisible) {
+                        showWithAnimation();
+                        if (!mIsGrabbingHandle) {
+                            scheduleAutoHideScrollerProcess();
+                        }
+                    }
                 }
             };
         }
@@ -211,6 +261,162 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      * Sub classes have to override this method and create the ScrollProgressCalculator instance in this method.
      */
     protected abstract void onCreateScrollProgressCalculator();
+
+    /**
+     * Returns true if the fast scroller is set to always show on this view.
+     *
+     * @return true if the fast scroller will always show
+     */
+    public boolean isFastScrollAlwaysVisible() {
+        return mFastScrollAlwaysVisible;
+    }
+
+    /**
+     * Sets whether or not the fast scroller should always be shown.
+     *
+     * @param alwaysVisible true if the fast scroller should always be displayed, false otherwise
+     */
+    public void setFastScrollAlwaysVisible(boolean alwaysVisible) {
+        if (mFastScrollAlwaysVisible == alwaysVisible) {
+            return;
+        }
+        mFastScrollAlwaysVisible = alwaysVisible;
+        if (mFastScrollAlwaysVisible) {
+            show();
+        } else {
+            cancelAutoHideScrollerProcess();
+        }
+    }
+
+    private void scheduleAutoHideScrollerProcess() {
+        cancelAutoHideScrollerProcess();
+
+        if (!mFastScrollAlwaysVisible) {
+            postDelayed(mAutoHideProcessRunnable, AUTO_HIDE_SCROLLER_TIMEOUT_MILLS);
+        }
+    }
+
+    private void cancelAutoHideScrollerProcess() {
+        removeCallbacks(mAutoHideProcessRunnable);
+    }
+
+    private void show() {
+        cancelAutoHideScrollerProcess();
+
+        if (getAnimation() != null) {
+            getAnimation().cancel();
+        }
+
+        ViewCompat.setTranslationX(this, 0);
+        ViewCompat.setTranslationY(this, 0);
+
+        setVisibility(View.VISIBLE);
+    }
+
+    private void hide() {
+        cancelAutoHideScrollerProcess();
+
+        if (getAnimation() != null) {
+            getAnimation().cancel();
+        }
+        setVisibility(View.INVISIBLE);
+    }
+
+    private void showWithAnimation() {
+        if ((mCurrentAnimationType == CURRENT_ANIMATION_SHOW) || (getVisibility() == View.VISIBLE)) {
+            return;
+        }
+
+        cancelAutoHideScrollerProcess();
+
+        if (getAnimation() != null) {
+            getAnimation().cancel();
+        }
+
+        final Animation anim = loadShowAnimation();
+
+        if (anim != null) {
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                    setVisibility(View.VISIBLE);
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mCurrentAnimationType = CURRENT_ANIMATION_NONE;
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+
+            mCurrentAnimationType = CURRENT_ANIMATION_SHOW;
+
+            startAnimation(anim);
+        } else {
+            show();
+        }
+    }
+
+    private void hideWithAnimation() {
+        if ((mCurrentAnimationType == CURRENT_ANIMATION_HIDE) || (getVisibility() != View.VISIBLE)) {
+            return;
+        }
+
+        cancelAutoHideScrollerProcess();
+
+        if (getAnimation() != null) {
+            getAnimation().cancel();
+        }
+
+        final Animation anim = loadHideAnimation();
+
+        if (anim != null) {
+            anim.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {
+                }
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    mCurrentAnimationType = CURRENT_ANIMATION_NONE;
+                    setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {
+                }
+            });
+
+            mCurrentAnimationType = CURRENT_ANIMATION_HIDE;
+
+            startAnimation(anim);
+        } else {
+            hide();
+        }
+    }
+
+    /**
+     * Sets whether user is grabbing the scroller handle
+     * @param isGrabbingHandle true: grabbing, false: not grabbing
+     */
+    public void setIsGrabbingHandle(boolean isGrabbingHandle) {
+        if (mIsGrabbingHandle == isGrabbingHandle) {
+            return;
+        }
+
+        mIsGrabbingHandle = isGrabbingHandle;
+
+        if (!mFastScrollAlwaysVisible) {
+            if (isGrabbingHandle) {
+                show();
+            } else {
+                scheduleAutoHideScrollerProcess();
+            }
+        }
+    }
 
     /**
      * Takes a touch event and determines how much scroll progress this translates into
@@ -245,4 +451,15 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      */
     public abstract void moveHandleToPosition(float scrollProgress);
 
+    /**
+     * Loads scroller show animation
+     * @return animation which is used for the showWithAnimation() method
+     */
+    protected abstract Animation loadShowAnimation();
+
+    /**
+     * Loads scroller hide animation
+     * @return animation which is used for the hideWithAnimation() method
+     */
+    protected abstract Animation loadHideAnimation();
 }
