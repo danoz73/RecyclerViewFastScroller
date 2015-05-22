@@ -38,7 +38,7 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
     private static final int DURATION_FADE_IN = 150;
     private static final int DURATION_FADE_OUT = 300;
     private static final int FADE_TIMEOUT = 1500;
-    private MediaHandler mHandler;
+    private HideHandler mHideHandler;
 
     private static final int[] STYLEABLE = R.styleable.AbsRecyclerViewFastScroller;
     /** The long bar along which a handle travels */
@@ -91,7 +91,7 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         } finally {
             attributes.recycle();
         }
-        mHandler = new MediaHandler(this);
+        mHideHandler = new HideHandler(this);
         setOnTouchListener(new FastScrollerTouchListener(this));
     }
 
@@ -292,17 +292,17 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
             .alpha(1f)
             .setDuration(DURATION_FADE_IN);
 
-        Message msg = mHandler.obtainMessage(1);
-        mHandler.removeMessages(1);
+        Message msg = mHideHandler.obtainMessage(1);
+        mHideHandler.removeMessages(1);
         if (timeout != 0) {
-            mHandler.sendMessageDelayed(msg, timeout);
+            mHideHandler.sendMessageDelayed(msg, timeout);
         }
     }
 
-    static class MediaHandler extends Handler {
+    static class HideHandler extends Handler {
         private final WeakReference<AbsRecyclerViewFastScroller> weakReference;
 
-        MediaHandler(AbsRecyclerViewFastScroller scroller) {
+        HideHandler(AbsRecyclerViewFastScroller scroller) {
             weakReference = new WeakReference<>(scroller);
         }
 
