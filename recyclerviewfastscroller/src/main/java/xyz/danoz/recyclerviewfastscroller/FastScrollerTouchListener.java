@@ -45,5 +45,4 @@ class FastScrollerTouchListener implements OnTouchListener {
                     sectionIndicator.animateAlpha(0f);
         }
     }
-
 }

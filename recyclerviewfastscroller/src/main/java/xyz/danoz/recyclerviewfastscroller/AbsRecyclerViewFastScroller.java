@@ -299,12 +299,6 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         }
     }
 
-    public void hide() {
-        animate()
-            .alpha(0f)
-            .setDuration(DURATION_FADE_OUT);
-    }
-
     static class MediaHandler extends Handler {
         private final WeakReference<AbsRecyclerViewFastScroller> weakReference;
 
@@ -318,7 +312,9 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
                 case 1:
                     AbsRecyclerViewFastScroller scroller = weakReference.get();
                     if (scroller == null) break;
-                    scroller.hide();
+                    scroller.animate()
+                            .alpha(0f)
+                            .setDuration(DURATION_FADE_OUT);
                     break;
             }
         }
