@@ -79,8 +79,6 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         } finally {
             attributes.recycle();
         }
-
-        setOnTouchListener(new FastScrollerTouchListener(this));
     }
 
     private void applyCustomAttributesToView(View view, Drawable drawable, int color) {
@@ -88,6 +86,31 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
             setViewBackground(view, drawable);
         } else {
             view.setBackgroundColor(color);
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        SectionIndicator sectionIndicator = this.getSectionIndicator();
+        showOrHideIndicator(sectionIndicator, event);
+
+        float scrollProgress = this.getScrollProgress(event);
+        this.scrollTo(scrollProgress, true);
+        this.moveHandleToPosition(scrollProgress);
+        return true;
+    }
+
+    private void showOrHideIndicator(@Nullable SectionIndicator sectionIndicator, MotionEvent event) {
+        if (sectionIndicator == null) {
+            return;
+        }
+
+        switch (event.getActionMasked()) {
+            case MotionEvent.ACTION_DOWN:
+                sectionIndicator.animateAlpha(1f);
+                return;
+            case MotionEvent.ACTION_UP:
+                sectionIndicator.animateAlpha(0f);
         }
     }
 
