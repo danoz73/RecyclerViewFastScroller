@@ -77,6 +77,9 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
                     getLayoutResourceId());
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             inflater.inflate(layoutResource, this, true);
+            
+            // Default to hiding the view so it can be shown on scroll and hidden again
+            setAlpha(0);
 
             mBar = findViewById(R.id.scroll_bar);
             mHandle = findViewById(R.id.scroll_handle);
