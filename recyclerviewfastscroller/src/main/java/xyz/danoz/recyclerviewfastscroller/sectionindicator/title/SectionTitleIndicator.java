@@ -40,11 +40,11 @@ public abstract class SectionTitleIndicator<T> extends AbsSectionIndicator<T> {
         TypedArray attributes = getContext().getTheme().obtainStyledAttributes(attrs, STYLEABLE, 0, 0);
         try {
             int customBackgroundColor =
-                    attributes.getColor(R.styleable.SectionTitleIndicator_backgroundColor, getDefaultBackgroundColor());
+                    attributes.getColor(R.styleable.SectionTitleIndicator_rfs_backgroundColor, getDefaultBackgroundColor());
             applyCustomBackgroundColorAttribute(customBackgroundColor);
 
             int customTextColor =
-                    attributes.getColor(R.styleable.SectionTitleIndicator_textColor, getDefaultBackgroundColor());
+                    attributes.getColor(R.styleable.SectionTitleIndicator_rfs_textColor, getDefaultBackgroundColor());
             applyCustomTextColorAttribute(customTextColor);
         } finally {
             attributes.recycle();
@@ -70,7 +70,7 @@ public abstract class SectionTitleIndicator<T> extends AbsSectionIndicator<T> {
 
     /**
      * Clients can provide a custom background color for a section indicator
-     * @param color provided in XML via the {@link R.styleable#SectionTitleIndicator_backgroundColor} parameter. If not
+     * @param color provided in XML via the {@link R.styleable#SectionTitleIndicator_rfs_backgroundColor} parameter. If not
      *              specified in XML, this defaults to that which is provided by {@link #getDefaultBackgroundColor()}
      */
     @Override
@@ -96,7 +96,7 @@ public abstract class SectionTitleIndicator<T> extends AbsSectionIndicator<T> {
 
     /**
      * Clients can provide a custom text color for a section indicator
-     * @param color provided in XML via the {@link R.styleable#SectionTitleIndicator_textColor} parameter. If not
+     * @param color provided in XML via the {@link R.styleable#SectionTitleIndicator_rfs_textColor} parameter. If not
      *              specified in XML, this defaults to that which is provided by {@link #getDefaultTextColor()} ()}
      */
     protected void applyCustomTextColorAttribute(int color) {

@@ -1,7 +1,7 @@
 RecyclerViewFastScroller
 ===================================
 
-The RecyclerViewFastScroller is a widget that can be added to a layout and connected to a RecyclerView for fast scrolling. In the interest of time, I am pushing out some usable code, but I plan on updating this to better support easy customization and inclusion in projects.
+The RecyclerViewFastScroller is a widget that can be added to a layout and connected to a RecyclerView for fast scrolling.
 
 This project is a demonstration of using the RecyclerViewFastScroller widget in a simple activity that uses the basic workings of com.example.android.recyclerview from the v21 Android samples.
 
@@ -11,8 +11,10 @@ This project is a demonstration of using the RecyclerViewFastScroller widget in 
 As of [`b3e2d2f`](https://github.com/danoz73/RecyclerViewFastScroller/commit/b3e2d2fa8284dea31fbc5f9f218199f2a187a657), there is now support for adding a `SectionIndicator` widget, which connects to the scroller. This adds functionality similar to Google's Lollipop Contacts application.
 
 ### Download
+
+You can grab the current version of the library from maven central
 ```java
-compile 'xyz.danoz:recyclerviewfastscroller:0.1.0'
+compile 'xyz.danoz:recyclerviewfastscroller:0.1.3'
 ```
 
 ### Usage
@@ -71,10 +73,10 @@ The best way to check everything out is to peruse the example code and run the s
 There are currently a few attributes that can be used to customize the vertical fast scroller:
 
 ```java
-  <attr name="barColor" format="color|reference" />
-  <attr name="barBackground" format="reference" />
-  <attr name="handleColor" format="color|reference" />
-  <attr name="handleBackground" format="reference" />
+  <attr name="rfs_barColor" format="color|reference" />
+  <attr name="rfs_barBackground" format="reference" />
+  <attr name="rfs_handleColor" format="color|reference" />
+  <attr name="rfs_handleBackground" format="reference" />
 ```
 
 You can see usage of some of these in the example `recycler_view_with_fast_scroller_fragment.xml` which is the layout for the example app's single fragment.
@@ -92,8 +94,8 @@ Refer to `RecyclerViewWithSectionIndicatorFragment` and the corresponding `recyc
       android:layout_toLeftOf="@id/fast_scroller"
       android:layout_toStartOf="@id/fast_scroller"
 
-      custom:backgroundColor="@android:color/white"
-      custom:textColor="@android:color/black"
+      recyclerviewfastscroller:rfs_backgroundColor="@android:color/white"
+      recyclerviewfastscroller:rfs_textColor="@android:color/black"
        />
 ...
 ```
@@ -104,10 +106,6 @@ and then connect it to the scroller in the fragment:
     fastScroller.setSectionIndicator(sectionTitleIndicator);
 ...
 ```
-
-### Setup
-
-This project is in transit to maven central, but is not yet available. For now, I have included an `.aar` file in https://github.com/danoz73/RecyclerViewFastScroller/releases that can be used for the time being.
 
 ### Contribution
 

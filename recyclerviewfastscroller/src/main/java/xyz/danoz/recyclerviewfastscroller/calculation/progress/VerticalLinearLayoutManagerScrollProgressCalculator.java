@@ -29,6 +29,9 @@ public class VerticalLinearLayoutManagerScrollProgressCalculator extends Vertica
         }
 
         View visibleChild = recyclerView.getChildAt(0);
+        if (visibleChild == null) {
+            return 0;
+        }
         ViewHolder holder = recyclerView.getChildViewHolder(visibleChild);
         int itemHeight = holder.itemView.getHeight();
         int recyclerHeight = recyclerView.getHeight();

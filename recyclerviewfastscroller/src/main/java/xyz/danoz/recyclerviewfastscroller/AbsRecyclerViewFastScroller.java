@@ -61,7 +61,7 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         TypedArray attributes = getContext().getTheme().obtainStyledAttributes(attrs, STYLEABLE, 0, 0);
 
         try {
-            int layoutResource = attributes.getResourceId(R.styleable.AbsRecyclerViewFastScroller_fast_scroller_layout,
+            int layoutResource = attributes.getResourceId(R.styleable.AbsRecyclerViewFastScroller_rfs_fast_scroller_layout,
                     getLayoutResourceId());
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             inflater.inflate(layoutResource, this, true);
@@ -69,12 +69,12 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
             mBar = findViewById(R.id.scroll_bar);
             mHandle = findViewById(R.id.scroll_handle);
 
-            Drawable barDrawable = attributes.getDrawable(R.styleable.AbsRecyclerViewFastScroller_barBackground);
-            int barColor = attributes.getColor(R.styleable.AbsRecyclerViewFastScroller_barColor, Color.GRAY);
+            Drawable barDrawable = attributes.getDrawable(R.styleable.AbsRecyclerViewFastScroller_rfs_barBackground);
+            int barColor = attributes.getColor(R.styleable.AbsRecyclerViewFastScroller_rfs_barColor, Color.GRAY);
             applyCustomAttributesToView(mBar, barDrawable, barColor);
 
-            Drawable handleDrawable = attributes.getDrawable(R.styleable.AbsRecyclerViewFastScroller_handleBackground);
-            int handleColor = attributes.getColor(R.styleable.AbsRecyclerViewFastScroller_handleColor, Color.GRAY);
+            Drawable handleDrawable = attributes.getDrawable(R.styleable.AbsRecyclerViewFastScroller_rfs_handleBackground);
+            int handleColor = attributes.getColor(R.styleable.AbsRecyclerViewFastScroller_rfs_handleColor, Color.GRAY);
             applyCustomAttributesToView(mHandle, handleDrawable, handleColor);
         } finally {
             attributes.recycle();
@@ -187,11 +187,12 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
             mOnScrollListener = new OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    TouchableScrollProgressCalculator scrollProgressCalculator = getScrollProgressCalculator();
+                    float scrollProgress = 0;
+                    ScrollProgressCalculator scrollProgressCalculator = getScrollProgressCalculator();
                     if (scrollProgressCalculator != null) {
-                        float scrollProgress = scrollProgressCalculator.calculateScrollProgress(recyclerView);
-                        moveHandleToPosition(scrollProgress);
+                        scrollProgress = scrollProgressCalculator.calculateScrollProgress(recyclerView);
                     }
+                    moveHandleToPosition(scrollProgress);
                 }
             };
         }
@@ -222,7 +223,11 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      * @return scroll progress, or fraction by which list is scrolled [0 to 1]
      */
     public float getScrollProgress(MotionEvent event) {
-        return getScrollProgressCalculator().calculateScrollProgress(event);
+        ScrollProgressCalculator scrollProgressCalculator = getScrollProgressCalculator();
+        if (scrollProgressCalculator != null) {
+            return getScrollProgressCalculator().calculateScrollProgress(event);
+        }
+        return 0;
     }
 
     /**
@@ -236,6 +241,7 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      * Define a ScrollProgressCalculator for your implementation of AbsFastScroller
      * @return a chosen implementation of {@link ScrollProgressCalculator}
      */
+    @Nullable
     protected abstract TouchableScrollProgressCalculator getScrollProgressCalculator();
 
     /**

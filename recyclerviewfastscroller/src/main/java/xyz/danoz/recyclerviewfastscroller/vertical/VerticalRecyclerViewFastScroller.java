@@ -1,14 +1,15 @@
 package xyz.danoz.recyclerviewfastscroller.vertical;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 import com.nineoldandroids.view.ViewHelper;
 
-import xyz.danoz.recyclerviewfastscroller.R;
 import xyz.danoz.recyclerviewfastscroller.AbsRecyclerViewFastScroller;
+import xyz.danoz.recyclerviewfastscroller.R;
 import xyz.danoz.recyclerviewfastscroller.RecyclerViewScroller;
 import xyz.danoz.recyclerviewfastscroller.calculation.VerticalScrollBoundsProvider;
 import xyz.danoz.recyclerviewfastscroller.calculation.position.VerticalScreenPositionCalculator;
@@ -22,8 +23,8 @@ import xyz.danoz.recyclerviewfastscroller.calculation.progress.VerticalScrollPro
  */
 public class VerticalRecyclerViewFastScroller extends AbsRecyclerViewFastScroller implements RecyclerViewScroller {
 
-    private VerticalScrollProgressCalculator mScrollProgressCalculator;
-    private VerticalScreenPositionCalculator mScreenPositionCalculator;
+    @Nullable private VerticalScrollProgressCalculator mScrollProgressCalculator;
+    @Nullable private VerticalScreenPositionCalculator mScreenPositionCalculator;
 
     public VerticalRecyclerViewFastScroller(Context context) {
         this(context, null);
@@ -43,12 +44,16 @@ public class VerticalRecyclerViewFastScroller extends AbsRecyclerViewFastScrolle
     }
 
     @Override
+    @Nullable
     protected TouchableScrollProgressCalculator getScrollProgressCalculator() {
         return mScrollProgressCalculator;
     }
 
     @Override
     public void moveHandleToPosition(float scrollProgress) {
+        if (mScreenPositionCalculator == null) {
+            return;
+        }
         ViewHelper.setY(mHandle, mScreenPositionCalculator.getYPositionFromScrollProgress(scrollProgress));
     }
 

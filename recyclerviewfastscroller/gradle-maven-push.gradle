@@ -35,7 +35,9 @@ afterEvaluate { project ->
     uploadArchives {
         repositories {
             mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+                beforeDeployment {
+                    MavenDeployment deployment -> signing.signPom(deployment)
+                }
 
                 pom.groupId = GROUP_ID
                 pom.artifactId = POM_ARTIFACT_ID
@@ -44,6 +46,7 @@ afterEvaluate { project ->
                 repository(url: getReleaseRepositoryUrl()) {
                     authentication(userName: OSSRH_USERNAME, password: OSSRH_PASSWORD)
                 }
+
                 snapshotRepository(url: getSnapshotRepositoryUrl()) {
                     authentication(userName: OSSRH_USERNAME, password: OSSRH_PASSWORD)
                 }
