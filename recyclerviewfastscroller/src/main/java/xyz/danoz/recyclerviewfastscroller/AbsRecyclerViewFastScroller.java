@@ -319,6 +319,21 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
     }
 
     /**
+     * Set timeout value.
+     * @param desiredTimeout
+     */
+    public void setTimeout(long desiredTimeout) {
+        mFastScrollTimeout = desiredTimeout;
+    }
+
+    /**
+     *
+     */
+    public long getTimeout() {
+        return mFastScrollTimeout;
+    }
+
+    /**
      * Get scroll visibility status.
      * @return scroll visibility status
      */
