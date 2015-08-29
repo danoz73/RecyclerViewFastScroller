@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +37,11 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
     /** The handle that signifies the user's progress in the list */
     protected final View mHandle;
 
+    private boolean mFastScrollAlwaysVisible;
+    private boolean mIsVisible;
+    private long mFastScrollTimeout;
+    private Handler mVisibilityHandler;
+
     /* TODO:
      *      Consider making RecyclerView final and should be passed in using a custom attribute
      *      This could allow for some type checking on the section indicator wrt the adapter of the RecyclerView
@@ -60,6 +66,9 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
 
         TypedArray attributes = getContext().getTheme().obtainStyledAttributes(attrs, STYLEABLE, 0, 0);
 
+        mFastScrollAlwaysVisible = true;
+        mFastScrollTimeout = 10000;
+
         try {
             int layoutResource = attributes.getResourceId(R.styleable.AbsRecyclerViewFastScroller_rfs_fast_scroller_layout,
                     getLayoutResourceId());
@@ -81,6 +90,10 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         }
 
         setOnTouchListener(new FastScrollerTouchListener(this));
+
+        if (!mFastScrollAlwaysVisible) {
+            setInvisible();
+        }
     }
 
     private void applyCustomAttributesToView(View view, Drawable drawable, int color) {
@@ -136,6 +149,7 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
     @Override
     public void setRecyclerView(RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
+        addOnTouchListener();
     }
 
     public void setSectionIndicator(SectionIndicator sectionIndicator) {
@@ -171,6 +185,36 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         return (int) (mRecyclerView.getAdapter().getItemCount() * scrollProgress);
     }
 
+    private void addOnTouchListener() {
+        mRecyclerView.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (!mIsVisible && mVisibilityHandler == null) {
+                            try {
+                                mVisibilityHandler = new Handler();
+                                mVisibilityHandler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setInvisible();
+                                        mVisibilityHandler = null;
+                                    }
+                                }, mFastScrollTimeout);
+                            } catch (Exception e) {
+                            }
+                        } else if (!mIsVisible && mVisibilityHandler != null) {
+                            setVisible();
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
     /**
      * Classes that extend AbsFastScroller must implement their own {@link OnScrollListener} to respond to scroll
      * events when the {@link #mRecyclerView} is scrolled NOT using the fast scroller.
@@ -182,6 +226,24 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
             mOnScrollListener = new OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    if (!mFastScrollAlwaysVisible && dy > 0) {
+                        if (!mIsVisible && mVisibilityHandler == null) {
+                            setVisible();
+                            try {
+                                mVisibilityHandler = new Handler();
+                                mVisibilityHandler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setInvisible();
+                                        mVisibilityHandler = null;
+                                    }
+                                }, mFastScrollTimeout);
+                            } catch (Exception e) {
+                            }
+                        } else if (!mIsVisible && mVisibilityHandler != null) {
+                            setVisible();
+                        }
+                    }
                     float scrollProgress = 0;
                     ScrollProgressCalculator scrollProgressCalculator = getScrollProgressCalculator();
                     if (scrollProgressCalculator != null) {
@@ -245,4 +307,40 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      */
     public abstract void moveHandleToPosition(float scrollProgress);
 
+    /**
+     * Set whether to always show or use the AbsListView behaviour.
+     * @param scrollAlwaysVisible
+     */
+    public void setScrollAlwaysVisible(boolean scrollAlwaysVisible) {
+        mFastScrollAlwaysVisible = scrollAlwaysVisible;
+        if (!mFastScrollAlwaysVisible) {
+            setInvisible();
+        }
+    }
+
+    /**
+     * Get scroll visibility status.
+     * @return scroll visibility status
+     */
+    public boolean getScrollAlwaysVisible() {
+        return mFastScrollAlwaysVisible;
+    }
+
+    /**
+     * Set bar and handle to be invisible
+     */
+    private void setInvisible() {
+        mBar.setVisibility(View.INVISIBLE);
+        mHandle.setVisibility(View.INVISIBLE);
+        mIsVisible = false;
+    }
+
+    /**
+     * Set bar and handle to be visible
+     */
+    private void setVisible() {
+        mBar.setVisibility(View.VISIBLE);
+        mHandle.setVisibility(View.VISIBLE);
+        mIsVisible = true;
+    }
 }
