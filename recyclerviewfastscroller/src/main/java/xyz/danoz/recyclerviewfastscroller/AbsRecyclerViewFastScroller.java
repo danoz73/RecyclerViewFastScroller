@@ -40,7 +40,9 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
     private boolean mFastScrollAlwaysVisible;
     private boolean mIsVisible;
     private long mFastScrollTimeout;
+    private long mEventTime;
     private Handler mVisibilityHandler;
+    private Runnable mVisibilityRunner;
 
     /* TODO:
      *      Consider making RecyclerView final and should be passed in using a custom attribute
@@ -90,10 +92,6 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         }
 
         setOnTouchListener(new FastScrollerTouchListener(this));
-
-        if (!mFastScrollAlwaysVisible) {
-            setInvisible();
-        }
     }
 
     private void applyCustomAttributesToView(View view, Drawable drawable, int color) {
@@ -185,29 +183,44 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         return (int) (mRecyclerView.getAdapter().getItemCount() * scrollProgress);
     }
 
+    /**
+     * Detect if we touch the recyclerview. Make visible if we did and set to be invisible.
+     */
     private void addOnTouchListener() {
+        mHandle.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getActionMasked()) {
+                    case MotionEvent.ACTION_DOWN:
+                        if (!mFastScrollAlwaysVisible) {
+                            mEventTime = System.currentTimeMillis();
+                            setVisible();
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if (!mFastScrollAlwaysVisible) {
+                            mEventTime = System.currentTimeMillis();
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
+
         mRecyclerView.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getActionMasked()) {
                     case MotionEvent.ACTION_DOWN:
-                        if (!mIsVisible && mVisibilityHandler == null) {
-                            try {
-                                mVisibilityHandler = new Handler();
-                                mVisibilityHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        setInvisible();
-                                        mVisibilityHandler = null;
-                                    }
-                                }, mFastScrollTimeout);
-                            } catch (Exception e) {
-                            }
-                        } else if (!mIsVisible && mVisibilityHandler != null) {
+                        if (!mFastScrollAlwaysVisible) {
+                            mEventTime = System.currentTimeMillis();
                             setVisible();
                         }
                         break;
                     case MotionEvent.ACTION_UP:
+                        if (!mFastScrollAlwaysVisible) {
+                            mEventTime = System.currentTimeMillis();
+                        }
                         break;
                 }
                 return false;
@@ -225,25 +238,14 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         if (mOnScrollListener == null) {
             mOnScrollListener = new OnScrollListener() {
                 @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if (!mFastScrollAlwaysVisible && dy != 0) {
-                        if (!mIsVisible && mVisibilityHandler == null) {
-                            setVisible();
-                            try {
-                                mVisibilityHandler = new Handler();
-                                mVisibilityHandler.postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        setInvisible();
-                                        mVisibilityHandler = null;
-                                    }
-                                }, mFastScrollTimeout);
-                            } catch (Exception e) {
-                            }
-                        } else if (!mIsVisible && mVisibilityHandler != null) {
+                public void onScrolled(final RecyclerView recyclerView, int dx, int dy) {
+                    if (!mFastScrollAlwaysVisible) {
+                        mEventTime = System.currentTimeMillis();
+                        if (dx != 0 && !mFastScrollAlwaysVisible) {
                             setVisible();
                         }
                     }
+
                     float scrollProgress = 0;
                     ScrollProgressCalculator scrollProgressCalculator = getScrollProgressCalculator();
                     if (scrollProgressCalculator != null) {
@@ -315,6 +317,24 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
         mFastScrollAlwaysVisible = scrollAlwaysVisible;
         if (!mFastScrollAlwaysVisible) {
             setInvisible();
+            if (mVisibilityHandler == null) {
+                mVisibilityHandler = new Handler();
+            }
+            mVisibilityRunner = new Runnable() {
+                public void run() {
+                    long end = mEventTime + mFastScrollTimeout;
+                    long time = System.currentTimeMillis();
+                    if (end < time && mIsVisible) {
+                        setInvisible();
+                    }
+                    try {
+                        mVisibilityHandler.postDelayed(this, 333);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            mVisibilityHandler.post(mVisibilityRunner);
         }
     }
 
@@ -324,6 +344,9 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      */
     public void setTimeout(long desiredTimeout) {
         mFastScrollTimeout = desiredTimeout;
+        if (mFastScrollTimeout < 3000) {
+            mFastScrollTimeout = 3000;
+        }
     }
 
     /**
