@@ -226,7 +226,7 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
             mOnScrollListener = new OnScrollListener() {
                 @Override
                 public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    if (!mFastScrollAlwaysVisible && dy > 0) {
+                    if (!mFastScrollAlwaysVisible && dy != 0) {
                         if (!mIsVisible && mVisibilityHandler == null) {
                             setVisible();
                             try {
