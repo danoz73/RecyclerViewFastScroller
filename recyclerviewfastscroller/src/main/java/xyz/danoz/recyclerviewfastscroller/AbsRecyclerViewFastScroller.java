@@ -47,6 +47,8 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
      * {@link OnScrollListener} an abstract class instead of an interface. Hmmm */
     protected OnScrollListener mOnScrollListener;
 
+    private boolean shouldCreateScrollProgressCalculator;
+
     public AbsRecyclerViewFastScroller(Context context) {
         this(context, null, 0);
     }
@@ -195,10 +197,18 @@ public abstract class AbsRecyclerViewFastScroller extends FrameLayout implements
     }
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        shouldCreateScrollProgressCalculator = true;
+    }
+
+    @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-        if (getScrollProgressCalculator() == null) {
+        if (getScrollProgressCalculator() == null || shouldCreateScrollProgressCalculator) {
+            shouldCreateScrollProgressCalculator = false;
             onCreateScrollProgressCalculator();
         }
 

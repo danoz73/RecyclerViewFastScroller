@@ -23,6 +23,8 @@ public abstract class AbsSectionIndicator<T> extends FrameLayout implements Sect
     private VerticalScreenPositionCalculator mScreenPositionCalculator;
     private DefaultSectionIndicatorAlphaAnimator mDefaultSectionIndicatorAlphaAnimator;
 
+    private boolean shouldCreateScreenPositionCalculator;
+
     public AbsSectionIndicator(Context context) {
         this(context, null);
     }
@@ -64,9 +66,17 @@ public abstract class AbsSectionIndicator<T> extends FrameLayout implements Sect
     protected abstract void applyCustomBackgroundColorAttribute(int color);
 
     @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+
+        shouldCreateScreenPositionCalculator = true;
+    }
+
+    @Override
     public void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        if (mScreenPositionCalculator == null) {
+        if (mScreenPositionCalculator == null || shouldCreateScreenPositionCalculator) {
+            shouldCreateScreenPositionCalculator = false;
             VerticalScrollBoundsProvider boundsProvider =
                     new VerticalScrollBoundsProvider(0, ((ViewGroup) getParent()).getHeight() - getHeight());
             mScreenPositionCalculator = new VerticalScreenPositionCalculator(boundsProvider);
