@@ -60,7 +60,7 @@ The best way to check everything out is to peruse the example code and run the s
       fastScroller.setRecyclerView(recyclerView);
       
       // Connect the scroller to the recycler (to let the recycler scroll the scroller's handle)
-      recyclerView.setOnScrollListener(fastScroller.getOnScrollListener());
+      recyclerView.addOnScrollListener(fastScroller.getOnScrollListener());
       
       ...
       return rootView;
