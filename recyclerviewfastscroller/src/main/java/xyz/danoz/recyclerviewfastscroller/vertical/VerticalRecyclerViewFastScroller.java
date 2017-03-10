@@ -1,6 +1,7 @@
 package xyz.danoz.recyclerviewfastscroller.vertical;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,8 +22,9 @@ import xyz.danoz.recyclerviewfastscroller.calculation.progress.VerticalScrollPro
  */
 public class VerticalRecyclerViewFastScroller extends AbsRecyclerViewFastScroller implements RecyclerViewScroller {
 
-    @Nullable private VerticalScrollProgressCalculator mScrollProgressCalculator;
-    @Nullable private VerticalScreenPositionCalculator mScreenPositionCalculator;
+    private VerticalScrollProgressCalculator mScrollProgressCalculator;
+    private VerticalScreenPositionCalculator mScreenPositionCalculator;
+    private VerticalScrollBoundsProvider boundsProvider;
 
     public VerticalRecyclerViewFastScroller(Context context) {
         this(context, null);
@@ -34,6 +36,13 @@ public class VerticalRecyclerViewFastScroller extends AbsRecyclerViewFastScrolle
 
     public VerticalRecyclerViewFastScroller(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
+    }
+
+    private void init() {
+        boundsProvider = new VerticalScrollBoundsProvider(mBar.getY(), mBar.getY() + mBar.getHeight() - mHandle.getHeight());
+        mScrollProgressCalculator = new VerticalLinearLayoutManagerScrollProgressCalculator(boundsProvider);
+        mScreenPositionCalculator = new VerticalScreenPositionCalculator(boundsProvider);
     }
 
     @Override
@@ -55,10 +64,8 @@ public class VerticalRecyclerViewFastScroller extends AbsRecyclerViewFastScrolle
         mHandle.setY(mScreenPositionCalculator.getYPositionFromScrollProgress(scrollProgress));
     }
 
+    @Override
     protected void onCreateScrollProgressCalculator() {
-        VerticalScrollBoundsProvider boundsProvider =
-                new VerticalScrollBoundsProvider(mBar.getY(), mBar.getY() + mBar.getHeight() - mHandle.getHeight());
-        mScrollProgressCalculator = new VerticalLinearLayoutManagerScrollProgressCalculator(boundsProvider);
-        mScreenPositionCalculator = new VerticalScreenPositionCalculator(boundsProvider);
+        boundsProvider.update(mBar.getY(), mBar.getY() + mBar.getHeight() - mHandle.getHeight());
     }
 }
